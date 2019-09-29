@@ -11,6 +11,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 public class TestBase {
 
@@ -18,6 +19,7 @@ public class TestBase {
     public static Properties config = new Properties();
     public static Properties OR = new Properties();
     public static FileInputStream fis;
+    public static Logger log = Logger.getLogger("devpinoyLogger");
 
     @BeforeSuite
     public void setUp(){
