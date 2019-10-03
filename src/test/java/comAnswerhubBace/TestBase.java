@@ -1,5 +1,10 @@
 package comAnswerhubBace;
 
+import com.relevantcodes.extentreports.ExtentReports;
+import com.relevantcodes.extentreports.ExtentTest;
+import comAnswerhubUtilities.ExtentManager;
+import org.apache.log4j.Logger;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -10,8 +15,10 @@ import org.testng.annotations.BeforeSuite;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.NoSuchElementException;
 import java.util.Properties;
-import java.util.logging.Logger;
+import java.util.concurrent.TimeUnit;
+
 
 public class TestBase {
 
@@ -20,6 +27,9 @@ public class TestBase {
     public static Properties OR = new Properties();
     public static FileInputStream fis;
     public static Logger log = Logger.getLogger("devpinoyLogger");
+    public static WebDriverWait wait;
+    public ExtentReports rep = ExtentManager.getInstance();
+    public static ExtentTest test;
 
     @BeforeSuite
     public void setUp(){
@@ -34,6 +44,7 @@ public class TestBase {
             }
             try {
                 config.load(fis);
+                log.debug("Config file loaded!!!");
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -44,30 +55,50 @@ public class TestBase {
             }
             try {
                 OR.load(fis);
+                log.debug("Or file loaded!!!");
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
         if(config.getProperty("browser").equals("firefox")) {
-            System.setProperty("webdriver.gecko.driver", System.getProperty("user.dir")+"\\src\\test\\resources\\executable\\geckodriver.exe");
+            System.setProperty("webdriver.gecko.driver", System.getProperty("user.dir")+"\\src\\test\\resources\\geckodriver.exe");
             driver = new FirefoxDriver();
         } else if(config.getProperty("browser").equals("chrome")) {
-            System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir")+"\\src\\test\\resources\\executable\\chromedriver.exe");
+            System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir")+"\\src\\main\\resources\\chromedriver.exe");
             driver = new ChromeDriver();
+            log.debug("Chrome Launched!!!");
         }
 
         driver.get(config.getProperty("testsiteurl"));
+        log.debug("Navigated to: " + config.getProperty("testsiteurl"));
         driver.manage().window().maximize();
 
-        WebDriverWait wait = new WebDriverWait(driver, 10);
+        driver.manage().timeouts().implicitlyWait(Integer.parseInt(config.getProperty("implicit.wait")),
+                TimeUnit.SECONDS);
+
+        wait = new WebDriverWait(driver, 10);
+
 
     }
 
-    @AfterSuite
-    public void tearDOwn(){
+    //@AfterSuite
+    //public void tearDOwn(){
 
-        if(driver!=null){
-            driver.quit();
+       // if(driver!=null){
+      //      driver.quit();
+      //  }
+      //  log.debug("Test execution completed!!!");
+
+  //  }
+
+    public boolean isElementPresent(By by) {
+
+        try{
+            driver.findElement(by);
+            return true;
+
+        } catch(NoSuchElementException e){
+            return false;
         }
 
     }

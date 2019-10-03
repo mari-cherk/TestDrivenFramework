@@ -3,10 +3,23 @@
 
 <suite name="Test Driven Framework" verbose="1" >
 
-    <test name="LoginValid">
+    <listeners>
+        <listener class-name="org.uncommons.reportng.HTMLReporter"/>
+        <listener class-name="org.uncommons.reportng.JUnitXMLReporter"/>
+        <listener class-name="comAnswerhubListener.CustomListeners"/>
+    </listeners>
+
+    <test name="LoginTest">
         <parameter name="browser" value="chrome"/>
         <classes>
             <class name="comAnswerhubTestcase.LoginTest"/>
+        </classes>
+    </test>
+
+    <test name="SiteSearch">
+        <parameter name="browser" value="chrome"/>
+        <classes>
+            <class name="comAnswerhubTestcase.SiteSearch"/>
         </classes>
     </test>
 </suite>
