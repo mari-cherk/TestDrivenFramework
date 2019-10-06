@@ -3,6 +3,7 @@ package comAnswerhubTestcase;
 
 
 
+
 import comAnswerhubBace.TestBase;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -18,14 +19,14 @@ public class LoginTest extends TestBase {
 
         //WebDriverWait wait = new WebDriverWait(driver,10);
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(OR.getProperty("usernameField"))));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(OR.getProperty("usernameField_XPATH"))));
 
         log.debug("Inside Login Test");
-        driver.findElement(By.xpath(OR.getProperty("usernameField"))).sendKeys("marinac");
-        driver.findElement(By.xpath(OR.getProperty("passwordField"))).sendKeys("654321");
-        driver.findElement(By.xpath(OR.getProperty("loginBtn"))).click();
+        type("usernameField_XPATH", "marinac");
+        type("passwordField_XPATH", "654321");
+        click("loginBtn_XPATH");
 
-        Assert.assertTrue(isElementPresent(By.xpath(OR.getProperty("createBtn"))), "Login is not successful");
+        Assert.assertTrue(isElementPresent(By.xpath(OR.getProperty("createBtn_XPATH"))), "Login is not successful");
 
         log.debug("Login successfully executed");
 
